@@ -11,29 +11,23 @@ source:
 
 build:
   number: 0
-  skip: true  # [win]
+  skip: True  # [win]
 
 requirements:
   build:
-    - toolchain
-    - autoconf  # [unix]
-    - automake  # [unix]
-    - libtool  # [unix]
-    - pkg-config  # [unix]
-    - bzip2 1.0.*
+    - {{ compiler('c') }}
+    - autoconf
+    - automake
+    - libtool
+    - pkg-config
+    - bzip2
     - expat
-    - libiconv
-    - openssl 1.0.*
-    - xz 5.2.*
-    - zlib 1.2.*
+    - libiconv       # [osx]
+    - openssl
 
   run:
-    - bzip2 1.0.*
     - expat
-    - libiconv
-    - openssl 1.0.*
-    - xz 5.2.*
-    - zlib 1.2.*
+    - libiconv       # [osx]
 
 test:
   commands:
