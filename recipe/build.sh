@@ -5,26 +5,28 @@ export CFLAGS="-std=c99 ${CFLAGS}"
 
 if [[ ${HOST} =~ .*darwin.* ]]; then
   export LDFLAGS="${LDFLAGS} -Wl,-rpath,${PREFIX}/lib"
+elif [[ ${HOST} =~ .*linux.* ]]; then
+  export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
+  export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
 fi
 
-<<<<<<< HEAD
-autoreconf -ivf
-./configure --prefix=${PREFIX} \
-            --with-expat \
-            --without-nettle \
-            --without-lz4 \
-            --without-lzmadec \
-            --without-xml2
-make -j${CPU_COUNT}
-#eval ${LIBRARY_SEARCH_VAR}="${PREFIX}/lib" make check
-=======
+# Prevent libtool overlinking icu into libarchive.so
+# -Wl,as-needed is not fixing this, maybe due to:
+# https://sigquit.wordpress.com/2011/02/16/why-asneeded-doesnt-work-as-expected-for-your-libraries-on-your-autotools-project/
+# rm ${PREFIX}/lib/libxml2.la
+
 autoreconf -vfi
 ./configure --prefix=${PREFIX}  \
-            --with-expat        \
-            --without-nettle    \
-            --without-lz4       \
-            --without-lzmadec   \
-            --without-xml2
+            --with-zlib         \
+            --with-bz2lib       \
+            --with-iconv        \
+            --with-lz4          \
+            --with-lzma         \
+            --with-lzo2         \
+            --without-cng       \
+            --with-openssl      \
+            --with-nettle       \
+            --with-xml2         \
+            --without-expat
 make -j${CPU_COUNT} ${VERBOSE_AT}
->>>>>>> Update to 3.3.2, use cross-compilers, libiconv only needed for macOS
 make install

@@ -20,16 +20,16 @@ requirements:
     - automake
     - libtool
     - pkg-config
+  host:
     - bzip2
-    - expat
+    - libiconv  # [osx]
+    - libxml2
+    - lz4-c
+    - lzo
+    - nettle
+    - openssl
     - xz
     - zlib
-    - libiconv       # [osx]
-    - openssl
-
-  run:
-    - expat
-    - libiconv       # [osx]
 
 test:
   commands:
