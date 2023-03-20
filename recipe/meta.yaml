@@ -49,7 +49,7 @@ requirements:
     #  against liblzo."
     # - lzo
     - openssl  # [not osx]
-    - libxml2 {{ libxml2 }}
+    - libxml2 2.10
     - zlib
     - zstd
 
