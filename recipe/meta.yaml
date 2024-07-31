@@ -53,7 +53,7 @@ requirements:
     - zlib {{ zlib }}
     - zstd {{ zstd }}
   run:
-    - openssl 3.*
+    - openssl
 
 test:
   requires:
