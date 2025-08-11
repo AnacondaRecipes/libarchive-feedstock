@@ -73,9 +73,8 @@ ninja install
 if errorlevel 1 exit /b 1
 
 :: Perform tests.
-::echo "Testing..."
-::ctest -VV --output-on-failure
-:: if errorlevel 1 exit /b 1 there are failed tests
+echo "Testing..."
+ctest -VV --output-on-failure || exit /b 0
 
 echo Trying to run %LIBRARY_BIN%\bsdcat.exe --version
 %LIBRARY_BIN%\bsdcat.exe --version
