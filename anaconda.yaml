@@ -1,4 +1,5 @@
 anaconda_config_version: 1
 upstream_sources:
-  - github:
-      identifier: libarchive/libarchive
+  - webpage:
+      url: https://www.libarchive.org/downloads/libarchive-{}.tar.gz
+      regex: libarchive-([\d.]+)\.tar\.gz
