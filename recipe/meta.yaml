@@ -1,13 +1,13 @@
 {% set name = "libarchive" %}
-{% set version = "3.8.2" %}
+{% set version = "3.8.7" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/{{ name }}/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 5f2d3c2fde8dc44583a61165549dc50ba8a37c5947c90fc02c8e5ce7f1cfb80d
+  url: https://github.com/{{ name }}/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: bc942030fe7cb30e04eed31bd5f63c38cdfd712315b303e91b64e58f05db2346
   patches:
     - patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch
 
