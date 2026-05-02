@@ -9,10 +9,12 @@ source:
   url: https://github.com/{{ name }}/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
   sha256: bc942030fe7cb30e04eed31bd5f63c38cdfd712315b303e91b64e58f05db2346
   patches:
+    # Patch 0010 is to be removed when updating to libarchive 3.8.
+    - patches/0010-revert-fix-soversion-computation.patch
     - patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage('libarchive', max_pin='x.x') }}
   # macOS' native crypto gets used here, but the headers are needed
