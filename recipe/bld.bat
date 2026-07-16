@@ -3,26 +3,6 @@ set LIB=%LIBRARY_LIB%;%LIB%
 set LIBPATH=%LIBRARY_LIB%;%LIBPATH%
 set INCLUDE=%LIBRARY_INC%;%INCLUDE%
 
-:: VS2008 doesn't have stdbool.h so copy in our own
-:: to 'lib' where the other headers are so it gets picked up.
-if "%VS_MAJOR%" == "9" (
-  if "%ARCH%" == "64" (
-::  The Windows 6.0A SDK does not provide the bcrypt.lib for 64-bit:
-::  C:\Program Files\Microsoft SDKs\Windows\v6.0A\Lib\x64
-::  .. yet does for 32-bit, oh well, this may disable password protected zip support.
-::  https://social.msdn.microsoft.com/Forums/windowsdesktop/en-US/673cc344-430c-4510-96e8-80b0bb42ae11/can-not-link-bcryptlib-to-an-64bit-build?forum=windowssdk
-    set ENABLE_CNG=NO
-  ) else (
-    set ENABLE_CNG=YES
-::  Have decided to standardise on *not* using bcrypt instead. If we update to the Windows Server 2008 SDK we could revisit this
-    set ENABLE_CNG=NO
-  )
-)
-
-:: libarchive >=3.8.8 uses BCrypt unconditionally on Windows; CMake only links
-:: bcrypt.lib when ENABLE_CNG is on (see upstream CMakeLists.txt).
-if not defined ENABLE_CNG set "ENABLE_CNG=YES"
-
 if "%vc%" NEQ "9" goto not_vc9
 :: This does not work yet:
 :: usage: cl [ option... ] filename... [ /link linkoption... ]
@@ -58,7 +38,7 @@ cmake -G "Ninja" ^
       -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS:BOOL=FALSE ^
       -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       -DCMAKE_C_FLAGS_RELEASE="%CFLAGS%" ^
-      -DENABLE_CNG=%ENABLE_CNG% ^
+      -DENABLE_CNG=ON ^
       -DENABLE_BZip2=ON ^
       -DBZIP2_ROOT=%PREFIX%/lib ^
      .
