@@ -19,6 +19,10 @@ if "%VS_MAJOR%" == "9" (
   )
 )
 
+:: libarchive >=3.8.8 uses BCrypt unconditionally on Windows; CMake only links
+:: bcrypt.lib when ENABLE_CNG is on (see upstream CMakeLists.txt).
+if not defined ENABLE_CNG set "ENABLE_CNG=YES"
+
 if "%vc%" NEQ "9" goto not_vc9
 :: This does not work yet:
 :: usage: cl [ option... ] filename... [ /link linkoption... ]
@@ -55,7 +59,7 @@ cmake -G "Ninja" ^
       -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       -DCMAKE_C_FLAGS_RELEASE="%CFLAGS%" ^
       -DENABLE_CNG=%ENABLE_CNG% ^
-      -DENABLE_BZIP2=TRUE ^
+      -DENABLE_BZip2=ON ^
       -DBZIP2_ROOT=%PREFIX%/lib ^
      .
 if errorlevel 1 exit /b 1
@@ -71,6 +75,11 @@ if errorlevel 1 exit /b 1
 echo "Installing..."
 ninja install
 if errorlevel 1 exit /b 1
+
+if not exist "%LIBRARY_BIN%\archive.dll" (
+  echo ERROR: %LIBRARY_BIN%\archive.dll was not installed
+  exit /b 1
+)
 
 :: Perform tests.
 echo "Testing..."

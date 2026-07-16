@@ -12,7 +12,7 @@ source:
     - patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage('libarchive', max_pin='x.x') }}
   # macOS' native crypto gets used here, but the headers are needed
@@ -64,6 +64,11 @@ test:
     # Verify libraries are in place.
     - test -f "${PREFIX}/lib/libarchive.a"             # [unix]
     - test -f "${PREFIX}/lib/libarchive${SHLIB_EXT}"   # [unix]
+
+    # Verify Windows DLL and import library (guards against empty packages).
+    - if not exist "%LIBRARY_BIN%\archive.dll" exit /B 1  # [win]
+    - if not exist "%LIBRARY_LIB%\archive.lib" exit /B 1  # [win]
+    - if not exist "%LIBRARY_INC%\archive.h" exit /B 1  # [win]
 
     # Check for commands
     - bsdcat --version
