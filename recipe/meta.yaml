@@ -9,6 +9,8 @@ source:
   url: https://github.com/{{ name }}/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
   sha256: 528f9c91e11238cbb5ce6d79b20fa3bb48a5cd124008036af1913d84fc5ba420
   patches:
+    # Patch 0010 is to be removed when updating to libarchive 3.8.
+    - patches/0010-revert-fix-soversion-computation.patch
     - patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch
 
 build:
